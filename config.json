@@ -1,0 +1,26 @@
+{
+    "mcpServers": {
+        "weather": {
+            "command": "uv",
+            "args": [
+                "run",
+                "--with",
+                "mcp[cli]",
+                "mcp",
+                "run",
+                "E:\\MCP\\multimodel-mcp\\server.py"
+            ]
+        },
+        "filesystem": {
+            "command": "uv",
+            "args": [
+                "run",
+                "--with",
+                "mcp[cli]",
+                "mcp",
+                "run",
+                "E:\\MCP\\multimodel-mcp\\file-system-mcp-server.py"
+            ]
+        }
+    }
+}
