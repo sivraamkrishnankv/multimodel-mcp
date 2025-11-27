@@ -1,46 +1,153 @@
-# 🤖 Multimodel MCP - AI-Powered Weather & File System Operations
+# 🤖 Multimodel MCP - Full-Stack AI Assistant
 
-A comprehensive **Model Context Protocol (MCP)** implementation that enables **Gemini AI** to interact with both **weather data** and **file systems** through natural language conversations. This project creates a multimodal AI assistant capable of retrieving weather information, managing files, and performing complex tasks across multiple domains simultaneously.
+A comprehensive **full-stack application** featuring **Gemini AI** integration with **Model Context Protocol (MCP)** servers for multimodal interactions. Combines natural language processing with real-time weather data and secure file system operations through both **web interface** and **CLI client**.
 
-## 📋 Table of Contents
+## 🌟 Key Highlights
 
+- **🤖 Gemini AI Integration** - Powered by Google's Gemini 2.5 Pro
+- **🌤️ Real-time Weather** - National Weather Service API integration
+- **📁 Secure File Operations** - Path-validated file system management
+- **🌐 Web Interface** - Modern Next.js React application
+- **💻 CLI Client** - Direct terminal-based interaction
+- **🔄 MCP Protocol** - Industry-standard tool calling architecture
+- **⚡ FastAPI Bridge** - HTTP shim connecting web frontend to MCP servers
+- **🎨 Modern UI** - Tailwind CSS + TypeScript + React components
+
+## 🏗️ Architecture Overview
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          🌐 Web Frontend                             │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │  Next.js React App (Port 3000)                                │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐              │ │
+│  │  │  Chat Page  │ │ Weather Page│ │ Files Page │              │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘              │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────┬───────────────────────────────────────────────┘
+                      │ HTTP API Calls (REST)
+                      ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        ⚡ HTTP Shim (Port 8003)                      │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │  FastAPI Bridge Application                                   │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐              │ │
+│  │  │ /api/chat   │ │ /api/weather│ │ /api/fs     │              │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘              │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────┬───────────────────────────────────────────────┘
+                      │ MCP Protocol
+           ┌──────────┴──────────┐
+           │                     │
+           ▼                     ▼
+┌─────────────────────┐ ┌─────────────────────┐
+│   🌤️ Weather       │ │   📁 File System    │
+│   MCP Server        │ │   MCP Server        │
+│  (Port 8001)        │ │  (Port 8002)        │
+│                     │ │                     │
+│  ┌─────────────┐    │ │  ┌─────────────┐    │
+│  │ NWS API     │    │ │  │ Local FS    │    │
+│  │ weather.gov │    │ │  │ Operations  │    │
+│  └─────────────┘    │ │  └─────────────┘    │
+└─────────────────────┘ └─────────────────────┘
+           │                     │
+           └──────────┬──────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        🧠 Gemini AI Agent                           │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │  Natural Language Processing                                  │ │
+│  │  Tool Calling & Orchestration                                 │ │
+│  │  Multi-step Task Execution                                    │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow Example
+
+**User Request**: *"Check California weather and save today's forecast to a file"*
+
+```
+1. User → Web Frontend (React Component)
+2. Frontend → HTTP API (/api/chat)
+3. API Route → HTTP Shim (FastAPI)
+4. HTTP Shim → Gemini AI Agent (via MCP)
+5. Agent → Weather Server (get_alerts)
+6. Agent → File Server (write_file)
+7. Results → HTTP Shim → Frontend → User
+```
+
+### Technology Stack
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Frontend** | Next.js, React, TypeScript, Tailwind CSS | Modern web interface |
+| **API Bridge** | FastAPI, Python | HTTP-to-MCP protocol translation |
+| **AI Agent** | Gemini 2.5 Pro, LangChain | Natural language processing & tool orchestration |
+| **MCP Servers** | FastMCP, Python | Domain-specific tool implementations |
+| **Data Sources** | NWS API, Local Filesystem | External data and file operations |
+
+- [Key Highlights](#-key-highlights)
+- [Architecture Overview](#-architecture-overview)
 - [Features](#-features)
 - [Project Structure](#-project-structure)
 - [Installation](#-installation)
 - [Quick Start](#-quick-start)
 - [Usage Guide](#-usage-guide)
+- [Web Interface](#-web-interface)
+- [CLI Interface](#-cli-interface)
 - [API Reference](#-api-reference)
-- [Integration Examples](#-integration-examples)
-- [Development & Testing](#-development--testing)
-- [Docker Deployment](#-docker-deployment)
+- [Development](#-development)
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
 
-## ✨ Key Features
+## ✨ Core Features
 
-### 🤖 Multimodal AI Capabilities
-- **Natural Language Interface**: Ask Gemini AI questions like *"What's the weather in California and create a summary file"*
-- **Cross-Domain Operations**: Seamlessly combine weather queries with file operations in single conversations
-- **Contextual Memory**: AI remembers conversation history for coherent multi-step tasks
-- **Intelligent Task Planning**: Gemini can break down complex requests into sequential operations
+### 🤖 Advanced AI Integration
+- **Gemini 2.5 Pro**: State-of-the-art multimodal language model
+- **Natural Language Processing**: Understand complex requests and intent
+- **Tool Calling Architecture**: MCP protocol for reliable function execution
+- **Conversation Memory**: Context-aware multi-turn conversations
+- **Intelligent Planning**: Break down complex tasks into executable steps
+
+### 🌐 Dual Interface Options
+
+#### Web Interface (Recommended)
+- **Modern UI**: Next.js 16 + React 19 + TypeScript
+- **Responsive Design**: Tailwind CSS styling
+- **Real-time Chat**: Streaming responses with loading states
+- **Dedicated Pages**: Separate interfaces for chat, weather, and file management
+- **API Integration**: RESTful endpoints connecting to MCP backend
+
+#### CLI Interface
+- **Terminal Access**: Direct command-line interaction
+- **Script Automation**: Easy integration with other tools
+- **Background Processing**: Run long-running tasks
+- **Debugging Support**: Detailed logging and error reporting
 
 ### 🛠️ MCP Server Ecosystem
-- **Weather Server**: Real-time weather alerts and 5-day forecasts from National Weather Service
-- **File System Server**: Complete file and directory management with security controls
-- **Dual Transport Support**: Both Stdio and Server-Sent Events (SSE) protocols
-- **Concurrent Operation**: Both servers run simultaneously, accessible to AI agent
+- **Weather Server**: Real-time NWS API integration (50 states)
+- **File System Server**: Secure local file operations with path validation
+- **HTTP Shim**: FastAPI bridge connecting web frontend to MCP servers
+- **Concurrent Execution**: Multiple servers running simultaneously
+- **Protocol Compliance**: Full MCP specification adherence
 
-### 🔒 Enterprise-Ready Security
-- **Path Validation**: File system operations restricted from system directories
-- **Safe Operations**: Read-only access to sensitive areas, controlled write permissions
-- **Error Handling**: Comprehensive error management with user-friendly messages
-- **API Rate Limiting**: Built-in protection against API abuse
+### 🔒 Security & Reliability
+- **Path Security**: File operations blocked from system directories (`/etc`, `/usr`, `C:\Windows`)
+- **Input Validation**: All user inputs validated and sanitized
+- **Error Boundaries**: Comprehensive error handling and user feedback
+- **API Protection**: Rate limiting and quota management
+- **Safe Operations**: Controlled access to sensitive resources
 
-### 📊 Data Integration
-- **Official Weather Data**: Direct connection to weather.gov API with 50-state coverage
-- **File Metadata**: Detailed file information including size, permissions, timestamps
-- **Structured Responses**: Consistent JSON-formatted data across all operations
-- **Real-time Updates**: Live weather data with current conditions and forecasts
+### 📊 Rich Data Integration
+- **Weather Intelligence**: Official NWS data with alerts, forecasts, and conditions
+- **File Metadata**: Complete file information (size, permissions, timestamps)
+- **Structured Output**: Consistent JSON responses across all operations
+- **Real-time Updates**: Live data from external APIs and local filesystem
+- **Cross-Platform**: Works on Windows, macOS, and Linux
 
 ## 🔄 System Architecture & Workflow
 
@@ -115,105 +222,185 @@ Response: "California weather alerts have been saved to alerts.txt"
 
 ```
 multimodel-mcp/
-├── 🧠 gemini-client.py          # Main Gemini AI chat interface
-├── 🌤️ server.py                 # Weather MCP server (NWS API integration)
-├── 📁 file-system-mcp-server.py # File system MCP server (CRUD operations)
-├── ⚙️ config.json               # MCP server configuration for mcp-use
-├── 📋 pyproject.toml            # Project configuration & dependencies
-├── 🔒 uv.lock                   # Dependency lock file
-├── 📖 README.md                 # This documentation
-├── 🔐 .env.example              # Environment variables template
-├── 🎯 .gitignore                # Git ignore rules
-└── 🐍 .python-version          # Python version specification
+├── 🔧 Backend (Python/FastAPI)
+│   ├── 🧠 gemini-client.py          # CLI Gemini AI chat interface
+│   ├── 🌤️ server.py                 # Weather MCP server (NWS API)
+│   ├── 📁 file-system-mcp-server.py # File system MCP server (CRUD ops)
+│   ├── 🌐 http_shim.py              # HTTP bridge for web frontend
+│   ├── ⚙️ config.json               # MCP server configuration
+│   ├── 📋 pyproject.toml            # Python dependencies & config
+│   └── 🔒 uv.lock                   # Python dependency lock file
+│
+├── 🌐 Frontend (Next.js/React)
+│   ├── src/app/
+│   │   ├── page.tsx                # Home (redirects to chat)
+│   │   ├── chat/page.tsx           # Main chat interface
+│   │   ├── weather/page.tsx        # Weather dashboard
+│   │   ├── files/page.tsx          # File management
+│   │   └── api/                    # REST API routes
+│   │       ├── chat/route.ts        # Chat endpoint
+│   │       ├── weather/             # Weather API routes
+│   │       └── fs/                  # File system API routes
+│   ├── package.json                # Node.js dependencies
+│   ├── tailwind.config.*           # CSS framework config
+│   └── tsconfig.json               # TypeScript configuration
+│
+└── 📚 Configuration & Docs
+    ├── 📖 README.md                 # This documentation
+    ├── 🔐 .env.example              # Environment variables template
+    ├── 🎯 .gitignore                # Git ignore rules
+    ├── 🐍 .python-version          # Python version specification
+    └── 📄 LICENSE                   # Project license
 ```
 
-### Core Components
+### Component Architecture
 
-| Component | Purpose | Technology |
-|-----------|---------|------------|
-| **Gemini Client** | Natural language AI interface | mcp-use + LangChain + Gemini AI |
-| **Weather Server** | Weather data & alerts | FastMCP + NWS API |
-| **File System Server** | File operations | FastMCP + pathlib |
-| **Configuration** | Server orchestration | JSON config + MCP protocol |
+| Component | Purpose | Technology Stack | Port |
+|-----------|---------|------------------|------|
+| **Gemini CLI Client** | Direct terminal AI chat | Python + mcp-use + Gemini | - |
+| **Weather MCP Server** | Weather data & alerts | FastMCP + NWS API | 8001 |
+| **File System MCP Server** | Secure file operations | FastMCP + pathlib | 8002 |
+| **HTTP Shim** | Web API bridge | FastAPI + MCP integration | 8003 |
+| **Web Frontend** | User interface | Next.js + React + TypeScript | 3000 |
+| **MCP Configuration** | Server orchestration | JSON + MCP protocol | - |
 
 ## 🚀 Installation
 
 ### Prerequisites
+- **Python 3.11+** with **uv package manager**
+- **Node.js 18+** with **npm/yarn**
+- **Google AI API Key** ([Get one here](https://makersuite.google.com/app/apikey))
 
-- **Python 3.11 or higher** (3.11 recommended)
-- **[uv](https://github.com/astral-sh/uv)** package manager (recommended)
-- **Google AI API key** (for Gemini AI multimodal interactions)
-
-### Step-by-Step Installation
-
-#### 1. Clone and Navigate
+### Backend Setup (Python/FastAPI)
 ```bash
-git clone <repository-url>
-cd weather-retriever-mcp
-```
-
-#### 2. Install with uv (Recommended)
-```bash
-# Install uv if not already installed
+# Install uv (if not already installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Sync dependencies
-uv sync
-```
-
-#### 3. Alternative: Install with pip
-```bash
-pip install -e .
-```
-
-#### 4. Environment Setup
-```bash
-# Copy environment template
-cp .env.example .env
-
-# Edit .env and add your Google AI API key
-echo "GOOGLE_API_KEY=your_google_api_key_here" > .env
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- **Python 3.11+**
-- **Google AI API Key** ([Get one here](https://makersuite.google.com/app/apikey))
-- **uv package manager** ([Install here](https://github.com/astral-sh/uv))
-
-### 1. Setup Environment
-```bash
 # Clone and enter project
 git clone <your-repo-url>
 cd multimodel-mcp
 
-# Install dependencies
+# Install Python dependencies
 uv sync
 
-# Setup API key
+# Setup environment variables
 cp .env.example .env
-# Edit .env and add your actual Google AI API key
+# Edit .env and add: GOOGLE_API_KEY=your_actual_api_key_here
 ```
 
-### 2. Start Multimodal AI Chat
+### Frontend Setup (Next.js/React)
 ```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install Node.js dependencies
+npm install
+# or
+yarn install
+```
+
+## 🚀 Quick Start
+
+### Option 1: Web Interface (Recommended)
+```bash
+# Terminal 1: Start the backend HTTP shim
+uv run python http_shim.py
+
+# Terminal 2: Start the frontend
+cd frontend && npm run dev
+
+# Open http://localhost:3000 in your browser
+```
+
+### Option 2: CLI Interface
+```bash
+# Start the CLI client directly
 uv run python gemini-client.py
 ```
 
-### 3. Try These Examples
+### Try These Multimodal Examples
 ```
-You: What weather alerts are there for California?
-You: List all files in the current directory
-You: Read the README.md file and summarize it
-You: Check Texas weather and save the results to weather_report.txt
-You: Create a new directory called 'notes' and add a file with meeting notes
+🌤️ Weather Operations:
+"What weather alerts are there for California?"
+"Get the 5-day forecast for New York City"
+
+📁 File Operations:
+"List all files in the current directory"
+"Read the README.md file and summarize it"
+"Create a new file called notes.txt with meeting notes"
+
+🔄 Combined Operations:
+"Check California weather and save the results to weather_report.txt"
+"Read all Python files and check for TODO comments"
+"Create a weather summary for Seattle and store it in reports/"
 ```
 
-### 4. Available Commands
-- `help` - Show available operations
+### Available Commands (CLI)
+- `help` - Show available operations and examples
 - `clear` - Clear conversation history
 - `exit` or `quit` - End session
+
+## 🌐 Web Interface
+
+### Starting the Web Application
+```bash
+# Terminal 1: Start HTTP shim (backend API)
+uv run python http_shim.py
+
+# Terminal 2: Start Next.js frontend
+cd frontend && npm run dev
+```
+
+### Available Pages
+
+#### Chat Page (`/chat`) - Main Interface
+- **Real-time AI chat** with Gemini 2.5 Pro
+- **Message history** with persistent conversations
+- **Loading states** and error handling
+- **Responsive design** for all screen sizes
+
+#### Weather Page (`/weather`) - Weather Dashboard
+- **Interactive weather queries** via REST API
+- **Real-time data** from NWS API
+- **State selection** and location-based forecasts
+- **Alert monitoring** and forecast visualization
+
+#### Files Page (`/files`) - File Management
+- **Directory browsing** with security validation
+- **File operations** (read, write, delete)
+- **Metadata display** (size, permissions, dates)
+- **Safe operations** with path restrictions
+
+### API Endpoints
+- `GET/POST /api/chat` - AI conversation interface
+- `GET/POST /api/weather/alerts` - Weather alerts by state
+- `GET/POST /api/weather/forecast` - Location-based forecasts
+- `GET/POST /api/fs/list` - Directory listing
+- `GET/POST /api/fs/read` - File reading
+- `GET/POST /api/fs/write` - File writing
+
+## 💻 CLI Interface
+
+### Direct Terminal Access
+```bash
+# Start interactive CLI session
+uv run python gemini-client.py
+```
+
+### CLI Features
+- **Persistent sessions** with conversation memory
+- **Background processing** for long-running tasks
+- **Detailed logging** for debugging
+- **Script integration** capabilities
+- **No web browser required**
+
+### CLI Commands
+```
+help     - Display available operations and examples
+clear    - Reset conversation history
+exit     - End the session gracefully
+quit     - Same as exit
+```
 
 ## 💡 Example Conversations
 
@@ -550,59 +737,224 @@ uv run mcp-inspector python server/weather.py
 
 ## 🔧 API Reference
 
-### Multimodal Operations
+### REST API Endpoints (Web Interface)
 
-The system exposes all operations through natural language via the Gemini AI interface. Here are the underlying MCP tools:
-
-#### Weather Operations
-- **`get_alerts(state)`** - Active weather alerts by state (CA, NY, TX, FL, etc.)
-- **`get_forecast(lat, lon)`** - 5-day weather forecast for coordinates
-
-#### File System Operations
-- **`read_file(path)`** - Read text file contents
-- **`write_file(path, content, create_dirs)`** - Write content to files
-- **`list_directory(path, show_hidden)`** - List directory contents
-- **`create_directory(path, create_parents)`** - Create directories
-- **`delete_file(path)`** - Delete files safely
-- **`get_file_info(path)`** - Get detailed file metadata
-
-### Data Formats
-
-#### Weather Data
+#### Chat API
+```
+POST /api/chat
+```
+**Purpose**: Send messages to Gemini AI for multimodal processing
+**Request**:
 ```json
 {
+  "message": "What weather alerts are there for California?",
+  "history": [
+    {"role": "user", "content": "Hello"},
+    {"role": "assistant", "content": "Hi there!"}
+  ]
+}
+```
+**Response**:
+```json
+{"reply": "There are currently no active weather alerts for California..."}
+```
+
+#### Weather APIs
+```
+GET/POST /api/weather/alerts
+POST /api/weather/forecast
+```
+**Weather Alerts**:
+```json
+{
+  "state": "CA",
   "alerts": [
     {
       "event": "Special Weather Statement",
-      "area": "Dalton Highway Summits",
+      "area": "Mountain Areas",
       "severity": "Minor",
-      "description": "Gusty winds and blowing snow expected..."
-    }
-  ],
-  "forecast": [
-    {
-      "period": "Today",
-      "temperature": "45°F",
-      "wind": "10 mph NW",
-      "conditions": "Partly cloudy"
+      "description": "Gusty winds expected..."
     }
   ]
 }
 ```
 
-#### File System Data
+**Weather Forecast**:
 ```json
 {
-  "files": [
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "forecast": [
+    {
+      "period": "Today",
+      "temperature": "68°F",
+      "wind": "5 mph W",
+      "conditions": "Sunny"
+    }
+  ]
+}
+```
+
+#### File System APIs
+```
+GET/POST /api/fs/list
+GET/POST /api/fs/read
+POST /api/fs/write
+```
+**Directory Listing**:
+```json
+{
+  "path": ".",
+  "contents": [
     {"name": "README.md", "type": "file", "size": 2048},
     {"name": "src", "type": "directory", "size": 0}
-  ],
-  "metadata": {
-    "path": "/project/README.md",
-    "permissions": "rw-r--r--",
-    "modified": "2025-11-26T10:30:00Z"
+  ]
+}
+```
+
+**File Read/Write**:
+```json
+{
+  "path": "notes.txt",
+  "content": "Meeting notes content...",
+  "success": true
+}
+```
+
+### MCP Tool Reference
+
+#### Weather MCP Server Tools
+- **`get_alerts(state: str)`** - Get active weather alerts for US states
+- **`get_forecast(latitude: float, longitude: float)`** - Get 5-day weather forecast
+
+#### File System MCP Server Tools
+- **`read_file(file_path: str)`** - Read text file contents
+- **`write_file(file_path: str, content: str, create_dirs: bool)`** - Write content to files
+- **`list_directory(dir_path: str, show_hidden: bool)`** - List directory contents
+- **`create_directory(dir_path: str, create_parents: bool)`** - Create directories
+- **`delete_file(file_path: str)`** - Delete files safely
+- **`get_file_info(file_path: str)`** - Get detailed file metadata
+
+### Configuration Files
+
+#### MCP Server Configuration (`config.json`)
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "command": "uv",
+      "args": ["run", "--with", "mcp[cli]", "mcp", "run", "server.py"]
+    },
+    "filesystem": {
+      "command": "uv",
+      "args": ["run", "--with", "mcp[cli]", "mcp", "run", "file-system-mcp-server.py"]
+    }
   }
 }
+```
+
+#### Environment Variables (`.env`)
+```bash
+GOOGLE_API_KEY=your_actual_google_ai_api_key_here
+```
+
+## 🛠️ Development
+
+### Development Setup
+
+#### Backend Development
+```bash
+# Install Python dependencies
+uv sync
+
+# Run individual MCP servers for testing
+uv run python server.py                    # Weather server (port 8001)
+uv run python file-system-mcp-server.py    # File server (port 8002)
+
+# Run HTTP shim for web integration
+uv run python http_shim.py                 # API bridge (port 8003)
+
+# Test CLI client
+uv run python gemini-client.py
+```
+
+#### Frontend Development
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev                                # Next.js dev server (port 3000)
+
+# Build for production
+npm run build
+npm start                                  # Production server
+```
+
+### Project Structure Details
+
+#### Backend Components
+- **`server.py`**: FastMCP weather server with NWS API integration
+- **`file-system-mcp-server.py`**: Secure file operations with path validation
+- **`http_shim.py`**: FastAPI bridge connecting MCP servers to web frontend
+- **`gemini-client.py`**: CLI interface using mcp-use library
+- **`config.json`**: MCP server orchestration configuration
+
+#### Frontend Components
+- **`frontend/`**: Complete Next.js 16 + React 19 application
+- **API Routes**: REST endpoints connecting to HTTP shim
+- **Pages**: Chat, weather dashboard, and file management interfaces
+- **Components**: Reusable UI components with TypeScript
+
+### Adding New Features
+
+#### New Weather Features
+```python
+# In server.py, add new MCP tool
+@mcp.tool()
+async def get_weather_history(state: str, days: int) -> str:
+    """Get historical weather data."""
+    # Implementation here
+    pass
+```
+
+#### New File Operations
+```python
+# In file-system-mcp-server.py
+@mcp.tool()
+async def search_files(directory: str, pattern: str) -> str:
+    """Search for files matching a pattern."""
+    # Implementation here
+    pass
+```
+
+#### New Web Pages
+```typescript
+// In frontend/src/app/new-feature/page.tsx
+export default function NewFeaturePage() {
+  // Implementation here
+}
+```
+
+### Testing
+
+#### Backend Testing
+```bash
+# Test MCP servers individually
+uv run mcp-inspector python server.py
+uv run mcp-inspector python file-system-mcp-server.py
+
+# Test HTTP shim API
+curl http://localhost:8003/docs  # FastAPI docs
+```
+
+#### Frontend Testing
+```bash
+cd frontend
+npm run lint    # ESLint checking
+npm run build   # Build verification
 ```
 
 ## 🐛 Troubleshooting
@@ -610,7 +962,7 @@ The system exposes all operations through natural language via the Gemini AI int
 ### Common Issues & Solutions
 
 #### ❌ "API key not valid" Error
-**Problem**: Gemini AI can't authenticate.
+**Problem**: Gemini AI authentication failed
 **Solution**:
 ```bash
 # Get API key from https://makersuite.google.com/app/apikey
@@ -618,108 +970,205 @@ The system exposes all operations through natural language via the Gemini AI int
 GOOGLE_API_KEY=your_actual_api_key_here
 ```
 
-#### ❌ "Connection refused" Error
-**Problem**: MCP servers not accessible.
+#### ❌ "Connection refused" / "Server not running"
+**Problem**: Backend services not accessible
 **Solution**:
 ```bash
-# Test individual servers:
-uv run python server.py                    # Weather server
-uv run python file-system-mcp-server.py    # File system server
-
-# Check if ports 8001/8002 are available
-netstat -an | findstr "8001 8002"
+# Start required services:
+uv run python http_shim.py          # For web interface
+# OR
+uv run python gemini-client.py      # For CLI interface
 ```
 
 #### ❌ "Module not found" Errors
-**Problem**: Dependencies not installed.
+**Problem**: Python dependencies missing
 **Solution**:
 ```bash
-uv sync  # Install all dependencies
-uv pip list  # Verify installation
+uv sync  # Install/update all Python dependencies
 ```
 
-#### ❌ "Permission denied" for File Operations
-**Problem**: File system access restricted.
-**Solution**: The server automatically blocks access to system directories:
-- `/etc`, `/usr`, `/bin`, `/sbin`
-- `C:\Windows`, `C:\Program Files`
-- Other sensitive system paths
-
-#### ❌ Weather API Not Responding
-**Problem**: NWS API issues.
+#### ❌ Frontend Build Errors
+**Problem**: Node.js dependencies or TypeScript issues
 **Solution**:
-- Check internet connectivity
-- Verify valid state codes (CA, NY, TX, FL, etc.)
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install  # Fresh installation
+```
+
+#### ❌ File Permission Errors
+**Problem**: File system operations blocked
+**Solution**: Server automatically restricts access to:
+- System directories (`/etc`, `/usr`, `C:\Windows`)
+- Sensitive paths and protected files
+- Use relative paths within project directory
+
+#### ❌ Weather API Errors
+**Problem**: NWS API connectivity issues
+**Solution**:
+- Verify internet connection
+- Check valid state codes (CA, NY, TX, FL, etc.)
 - NWS API may have temporary outages
 
 ### 🔍 Debug Commands
 
 ```bash
-# Test basic functionality
-uv run python -c "import server, file_system_mcp_server; print('Servers import OK')"
+# Backend diagnostics
+uv run python -c "import server; print('Weather server: OK')"
+uv run python -c "import http_shim; print('HTTP shim: OK')"
+uv run python -c "from mcp_use import MCPClient; print('MCP client: OK')"
 
-# Test MCP configuration
-uv run python -c "from mcp_use import MCPClient; client = MCPClient.from_config_file('config.json'); print('Config OK')"
+# Frontend diagnostics
+cd frontend && npm run lint  # Check for errors
+cd frontend && npm run build  # Test build process
 
-# Check Gemini API key
-uv run python -c "import os; from dotenv import load_dotenv; load_dotenv(); print('API Key:', bool(os.getenv('GOOGLE_API_KEY')))"
-
-# Test server startup
-uv run python server.py &
-uv run python file-system-mcp-server.py &
+# Network diagnostics
+netstat -an | findstr "3000\|8001\|8002\|8003"  # Check port availability
+curl http://localhost:8003/health  # Test HTTP shim
 ```
 
-### 📊 Performance Notes
+### 📊 Performance & Limits
 
-- **Gemini API Rate Limits**: Free tier allows ~50 requests/minute
-- **Weather API**: Real-time data, may have brief delays
-- **File Operations**: Local filesystem, instant response
-- **Memory Usage**: Each server uses ~50-100MB RAM
+- **Gemini API**: Free tier ~50 requests/minute, paid tiers higher
+- **Weather API**: Real-time NWS data, occasional delays
+- **File Operations**: Local filesystem, instant responses
+- **Memory Usage**: ~100-200MB per running service
+- **Concurrent Users**: Web interface supports multiple sessions
 
 ## 🤝 Contributing
 
-### Development Setup
+### Getting Started
 ```bash
 git clone <your-repo-url>
 cd multimodel-mcp
+
+# Backend setup
 uv sync
-cp .env.example .env  # Add your API keys
+cp .env.example .env  # Add your GOOGLE_API_KEY
+
+# Frontend setup
+cd frontend && npm install
 ```
 
-### Adding New Capabilities
+### Development Workflow
 
-#### New Weather Features
+#### Backend Contributions
+1. **MCP Server Extensions**: Add new tools to `server.py` or `file-system-mcp-server.py`
+2. **API Enhancements**: Extend `http_shim.py` with new endpoints
+3. **CLI Improvements**: Enhance `gemini-client.py` features
+
+#### Frontend Contributions
+1. **UI Components**: Add new pages in `frontend/src/app/`
+2. **API Integration**: Create new API routes for backend features
+3. **UX Improvements**: Enhance user experience and responsiveness
+
+#### Example: Adding a New Weather Feature
 ```python
+# In server.py
 @mcp.tool()
-async def get_weather_history(state: str, days: int) -> str:
-    """Get historical weather data."""
+async def get_weather_trends(state: str, days: int = 7) -> str:
+    """Analyze weather trends for the past N days."""
     # Implementation here
+    return f"Weather trends for {state} over {days} days..."
 ```
 
-#### New File Operations
+#### Example: Adding a New File Operation
 ```python
+# In file-system-mcp-server.py
 @mcp.tool()
-async def search_files(directory: str, pattern: str) -> str:
-    """Search for files matching a pattern."""
-    # Implementation here
+async def find_files_by_content(directory: str, search_text: str) -> str:
+    """Find files containing specific text."""
+    # Implementation with security validation
+    return f"Files containing '{search_text}' in {directory}..."
 ```
 
-#### Custom AI Behaviors
-Extend the Gemini client with specialized workflows or domain knowledge.
+### Testing Your Changes
+
+#### Backend Testing
+```bash
+# Test MCP servers
+uv run mcp-inspector python server.py
+uv run mcp-inspector python file-system-mcp-server.py
+
+# Test HTTP shim
+uv run python http_shim.py
+curl http://localhost:8003/docs
+```
+
+#### Frontend Testing
+```bash
+cd frontend
+npm run lint
+npm run build
+npm run dev
+```
+
+### Code Guidelines
+
+#### Python (Backend)
+- **Type Hints**: Use full type annotations
+- **Docstrings**: Comprehensive function documentation
+- **Error Handling**: Proper exception management
+- **Security**: Input validation and path security
+- **Async/Await**: Use async patterns for I/O operations
+
+#### TypeScript (Frontend)
+- **Type Safety**: Strict TypeScript usage
+- **Component Structure**: Reusable, well-structured components
+- **Error Boundaries**: Proper error handling in React
+- **API Integration**: Consistent API call patterns
+- **Styling**: Tailwind CSS best practices
+
+### Submitting Changes
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Areas for Contribution
+
+- **🌤️ Weather Features**: Historical data, weather maps, severe weather tracking
+- **📁 File Operations**: Search, compression, batch operations, file analysis
+- **🤖 AI Enhancements**: Custom prompts, specialized workflows, multi-language support
+- **🎨 UI/UX**: Better interfaces, mobile responsiveness, accessibility
+- **📊 Analytics**: Usage tracking, performance monitoring, error reporting
+- **🔒 Security**: Enhanced validation, audit logging, permission systems
 
 ## 📄 License
 
-MIT License - see project repository for details.
+**MIT License** - See [LICENSE](LICENSE) file for full details.
+
+This project is open source and available under the MIT License, allowing free use, modification, and distribution with proper attribution.
 
 ## 🙏 Acknowledgments
 
-- **Google AI** - Gemini 2.5 Pro model
-- **National Weather Service** - weather.gov API
-- **MCP Community** - Model Context Protocol
-- **FastMCP & mcp-use** - MCP implementation libraries
+### Core Technologies
+- **Google AI** - Gemini 2.5 Pro multimodal language model
+- **National Weather Service** - Official weather.gov API
+- **Model Context Protocol** - Industry-standard AI tool integration
+- **FastMCP** - Lightweight MCP server framework
+- **mcp-use** - Python MCP client library
+
+### Web Technologies
+- **Next.js 16** - React framework with App Router
+- **React 19** - UI component library
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **FastAPI** - Modern Python web framework
+
+### Development Tools
+- **uv** - Fast Python package manager
+- **ESLint** - JavaScript/TypeScript linting
+- **Prettier** - Code formatting
 
 ---
 
-**Built with ❤️ for multimodal AI interactions**
+**Built with ❤️ for seamless human-AI collaboration**
 
-*Questions? Open an issue or contribute to the project!*
+*Have questions? Found a bug? Want to contribute? [Open an issue](https://github.com/your-repo/issues) or [start a discussion](https://github.com/your-repo/discussions)!*
+
+---
+
+**⭐ Star this repo if you find it useful!**
